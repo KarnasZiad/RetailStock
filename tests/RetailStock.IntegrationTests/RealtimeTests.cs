@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using RetailStock.Api.Endpoints;
 using RetailStock.Api.Realtime;
 using RetailStock.Domain.Stock;
