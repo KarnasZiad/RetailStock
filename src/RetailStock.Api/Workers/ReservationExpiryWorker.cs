@@ -16,6 +16,9 @@ internal sealed partial class ReservationExpiryWorker(
     IOptions<ReservationExpiryOptions> options,
     ILogger<ReservationExpiryWorker> logger) : BackgroundService
 {
+    // The .NET 8 [LoggerMessage] generator needs an ILogger field (primary constructor parameters are not supported).
+    private readonly ILogger<ReservationExpiryWorker> _logger = logger;
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var timer = new PeriodicTimer(options.Value.Interval);

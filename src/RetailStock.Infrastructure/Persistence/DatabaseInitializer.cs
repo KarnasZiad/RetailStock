@@ -8,6 +8,9 @@ namespace RetailStock.Infrastructure.Persistence;
 /// <summary>Applies pending migrations and, on an empty database, loads a demo store network.</summary>
 public sealed partial class DatabaseInitializer(RetailStockDbContext db, TimeProvider clock, ILogger<DatabaseInitializer> logger)
 {
+    // The .NET 8 [LoggerMessage] generator needs an ILogger field (primary constructor parameters are not supported).
+    private readonly ILogger<DatabaseInitializer> _logger = logger;
+
     public async Task InitializeAsync(bool seedDemoData, CancellationToken cancellationToken = default)
     {
         await db.Database.MigrateAsync(cancellationToken);

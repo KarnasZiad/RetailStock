@@ -39,6 +39,9 @@ public sealed partial class OperationRunner(
     IStockEventPublisher publisher,
     ILogger<OperationRunner> logger)
 {
+    // The .NET 8 [LoggerMessage] generator needs an ILogger field (primary constructor parameters are not supported).
+    private readonly ILogger<OperationRunner> _logger = logger;
+
     public const int MaxAttempts = 5;
 
     public async Task<TResult> RunAsync<TResult>(Func<OperationContext, Task<TResult>> operation, CancellationToken cancellationToken = default)

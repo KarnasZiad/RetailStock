@@ -11,6 +11,9 @@ internal sealed partial class SignalRStockEventPublisher(
     IHubContext<StockHub, IStockClient> hub,
     ILogger<SignalRStockEventPublisher> logger) : IStockEventPublisher
 {
+    // The .NET 8 [LoggerMessage] generator needs an ILogger field (primary constructor parameters are not supported).
+    private readonly ILogger<SignalRStockEventPublisher> _logger = logger;
+
     public async Task PublishAsync(IReadOnlyCollection<IDomainEvent> events, CancellationToken cancellationToken = default)
     {
         foreach (var domainEvent in events)

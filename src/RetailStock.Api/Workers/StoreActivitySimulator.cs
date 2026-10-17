@@ -23,6 +23,9 @@ internal sealed partial class StoreActivitySimulator(
     IOptions<SimulatorOptions> options,
     ILogger<StoreActivitySimulator> logger) : BackgroundService
 {
+    // The .NET 8 [LoggerMessage] generator needs an ILogger field (primary constructor parameters are not supported).
+    private readonly ILogger<StoreActivitySimulator> _logger = logger;
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (!options.Value.Enabled)
