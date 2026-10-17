@@ -1,0 +1,41 @@
+name: retailstock
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: retailstock
+      POSTGRES_USER: retailstock
+      POSTGRES_PASSWORD: retailstock
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retailstock -d retailstock"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      ConnectionStrings__RetailStock: Host=postgres;Database=retailstock;Username=retailstock;Password=retailstock
+      Database__SeedDemoData: "true"
+      Simulator__Enabled: "true"
+    ports:
+      - "5080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
